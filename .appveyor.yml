@@ -1,0 +1,28 @@
+version: 1.0.{build}
+
+image: Ubuntu2204
+
+build_script:
+
+- cmd: echo "AppVeyor"
+
+test: off
+
+#---------------------------------#
+
+#  Skip builds for doc changes    #
+
+#---------------------------------#
+
+skip_commits:
+
+  # Regex for matching commit message
+
+  message: /\(doc\).*/
+
+environment:
+  APPVEYOR_SSH_KEY: ${{ secrets.SSH }}
+
+on_finish:
+  - sh: export APPVEYOR_SSH_BLOCK=true
+  - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
